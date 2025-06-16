@@ -89,7 +89,7 @@ Ensure that you have:
 
 **Team 12**  
 Final Score: `$2749.1060`  
-Members: Ian Turner, [Add other names if needed]
+Members: Ian Turner, Elliot Lin, Joe Lin, Allison Chen
 
 ---
 
