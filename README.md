@@ -1,91 +1,112 @@
-# CS145 Recommender Systems Competition
+# CS145 Recommender Systems Final Submission
 
-This repository contains our full solution for the CS145 Recommender Systems Competition. It includes content-based, sequence-based, and graph-based recommendation models, along with our final submission that achieved a leaderboard score of **$2749.1060** in discounted revenue.
+This repository contains our full implementation for the CS145 Recommender Systems Competition. It includes all models and experiments developed across the three checkpoints (content-based, sequence-based, and graph-based recommenders), as well as our final submission.
 
 ---
 
-## 🏆 Final Model: Graph Convolutional Network (GCN)
+## 🏆 Final Leaderboard Score
 
-- **Discounted Revenue**: $2749.1060  
-- Represents user–item interactions as a bipartite graph  
-- Learns embeddings using a 2-layer GCN with ReLU activation  
-- Trained with negative sampling and binary cross-entropy loss  
-- Final relevance score = dot(user, item) × item price  
+**Discounted Revenue**: `$2749.1060`  
+**Final Model**: Graph Convolutional Network (GCN)
 
 ---
 
 ## 📁 Repository Structure
 
 ```
-├── GCN.py                 # Final GCN model implementation
-├── GRU.py                 # GRU-based sequential model
-├── LSTM.py                # LSTM-based sequential model
-├── RNN.py                 # RNN baseline
-├── ar_implementation.py   # Autoregressive n-gram recommender
-├── GradientBoosting.py    # Gradient Boosting content model
-├── LogisticRegression.py  # Logistic Regression baseline
-├── RandomForest.py        # Random Forest content model
-├── KNN.py                 # k-Nearest Neighbors model
-├── submission.py          # Final leaderboard submission (GCN)
-├── README.md              # This file
+.
+├── checkpoint1/          # Content-Based Recommenders
+│   ├── LogisticRegression.py
+│   ├── RandomForest.py
+│   ├── GradientBoosting.py
+│   └── KNN.py
+│
+├── checkpoint2/          # Sequence-Based Recommenders
+│   ├── ar_implementation.py
+│   ├── RNN.py
+│   ├── LSTM.py
+│   └── GRU.py
+│
+├── checkpoint3/          # Graph-Based Recommender
+│   └── GCN.py
+│
+├── submission.py         # Final leaderboard submission (GCN-based)
+├── README.md             # This file
 ```
 
 ---
 
-## ✅ Implemented Models
+## ✅ Included Models
 
-**Content-Based**  
-- Logistic Regression  
-- Random Forest  
-- Gradient Boosting  
-- KNN  
+**Checkpoint 1 – Content-Based**
+- Logistic Regression
+- Random Forest
+- Gradient Boosting
+- K-Nearest Neighbors (KNN)
 
-**Sequence-Based**  
-- AR n-gram recommender  
-- RNN / GRU / LSTM  
+**Checkpoint 2 – Sequence-Based**
+- Autoregressive N-gram Recommender
+- RNN, LSTM, GRU sequence models
 
-**Graph-Based**  
-- GCN (Final Submission)
+**Checkpoint 3 – Graph-Based**
+- Graph Convolutional Network (GCN)
 
 ---
 
-## 🔧 Setup Instructions
+## 🚀 Final Model (GCN)
 
-1. Clone this repository:
+- Constructs a bipartite user–item graph
+- Trains a 2-layer GCN with ReLU activations
+- Uses dot product of embeddings × item price for scoring
+- Trained using binary cross-entropy with negative sampling
+
+---
+
+## 🔧 How to Run
+
+1. Clone the repo:
 ```bash
-git clone https://github.com/your-team/cs145-recsys-team.git
-cd cs145-recsys-team
+git clone https://github.com/your-team/cs145-final.git
+cd cs145-final
 ```
 
-2. Set up environment:
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-Make sure you have:
+Ensure that you have:
 - Python 3.8+
-- Java 8+ (for PySpark)
+- PyTorch
+- PySpark
+- Java 8+
 
-3. Run experiments using the provided scripts or submit `submission.py` to the leaderboard.
-
----
-
-## 🧪 Reproducibility
-
-To reproduce results:
-- Run the appropriate model file (e.g., `python GCN.py`)
-- Make sure data generators and simulators from the course package are included
-- Final model is `MyRecommender` class inside `submission.py`
+3. Submit `submission.py` on the course leaderboard website to reproduce results.
 
 ---
 
 ## 👥 Team Info
 
 **Team 12**  
-Final Score: **$2749.1060**  
-Members: Joe Lin, Ian Turner, Elliot Lin, and Allison Chen
+Final Score: `$2749.1060`  
+Members: Ian Turner, [Add other names if needed]
 
 ---
 
-## 📚 Course Concepts
+## 📌 Notes
 
-This project applied supervised learning, graph neural networks, sequence modeling, feature engineering, and ranking-based evaluation — aligning directly with CS145's focus on scalable recommendation and mining techniques.
+- Random seeds are set for reproducibility
+- Evaluation uses revenue-weighted scoring (probability × price)
+- We manually tuned embedding size (64), learning rate (0.01), and trained for 5 epochs
+
+---
+
+## 🧠 CS145 Concepts Applied
+
+- Feature engineering & supervised learning
+- Graph neural networks and sequential modeling
+- Ranking metrics: precision@k, NDCG, MRR, discounted revenue
+- Trade-offs between generalization and memorization in recommendation
+
+---
+
+Let us know if you want the non-markdown version or a version ready for PDF appendix formatting.
