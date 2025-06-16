@@ -31,6 +31,7 @@ This repository contains our full implementation for the CS145 Recommender Syste
 │   └── GCN.py
 │
 ├── submission.py         # Final leaderboard submission (GCN-based)
+├── requirements.txt
 ├── README.md             # This file
 ```
 
