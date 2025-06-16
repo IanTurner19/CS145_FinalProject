@@ -69,7 +69,7 @@ class MyRecommender:
     with their own recommendation algorithm.
     """
     
-    def __init__(self, seed=None, penalty=None, C=10):
+    def __init__(self, seed=None, penalty=None, C=0.01):
         """
         Initialize recommender.
         
@@ -78,8 +78,6 @@ class MyRecommender:
         """
         self.seed = seed
         # Add your initialization logic here
-        self.user_feat_cols = []
-        self.item_feat_cols = []
         self.penalty = penalty
         self.C = C
         self.scalar = StandardScaler()
@@ -105,18 +103,7 @@ class MyRecommender:
         #  2. Learn user preferences from the log
         #  3. Build item similarity matrices or latent factor models
         #  4. Store learned parameters for later prediction
-        # self.user_feat_cols = [col for col in user_features.columns if col.startswith('user_attr_')]
-        # self.item_feat_cols = [col for col in item_features.columns if col.startswith('item_attr_')]
 
-        # joined = log.join(user_features, on='user_idx', how='left').join(item_features, on='item_idx', how='left')
-
-        
-        # X = np.array(joined.select(self.user_feat_cols + self.item_feat_cols).collect())
-        # y = np.array(joined.select('relevance').rdd.flatMap(lambda x: x).collect())
-        
-        # scaler = StandardScaler()
-        # X_scaled = scaler.fit_transform(X)
-        # self.model.fit(X_scaled, y)
         if user_features and item_features:
             pd_log = log.join(
                 user_features, 
@@ -158,47 +145,7 @@ class MyRecommender:
         #  2. Calculate relevance scores for each user-item pair
         #  3. Rank items by relevance and select top-k
         #  4. Return a dataframe with columns: user_idx, item_idx, relevance
-        
-        # Example of a random recommender implementation:
-        # # Cross join users and items
-        # recs = users.crossJoin(items)
-        
-        # # Filter out already seen items if needed
-        # if filter_seen_items and log is not None:
-        #     seen_items = log.select("user_idx", "item_idx")
-        #     recs = recs.join(
-        #         seen_items,
-        #         on=["user_idx", "item_idx"],
-        #         how="left_anti"
-        #     )
-        
-        # feature_rows = recs.select('user_idx', 'item_idx', *(self.user_feat_cols + self.item_feat_cols)).collect()
-        # user_ids = [row['user_idx'] for row in feature_rows]
-        # item_ids = [row['item_idx'] for row in feature_rows]
-        # X = np.array([[row[col] for col in self.user_feat_cols + self.item_feat_cols] for row in feature_rows])
 
-        # probs = self.model.predict_proba(X)[:, 1]
-
-        # results = list(zip(user_ids, item_ids, probs))
-
-        # # Define schema
-        # schema = StructType([
-        #     StructField("user_idx", LongType(), nullable=False),
-        #     StructField("item_idx", LongType(), nullable=False),
-        #     StructField("relevance", DoubleType(), nullable=False)
-        # ])
-
-        # # Convert results to rows
-        # results_rows = [Row(user_idx=int(u), item_idx=int(i), relevance=float(r)) for u, i, r in results]
-        # result_df = spark.createDataFrame(results_rows, schema=schema)
-
-        # # Rank items by relevance for each user
-        # window = Window.partitionBy("user_idx").orderBy(sf.desc("relevance"))
-        # ranked = result_df.withColumn("rank", sf.row_number().over(window))
-        
-        # # Filter top-k recommendations
-        # top_k = ranked.filter(sf.col("rank") <= k).drop("rank")
-        # return top_k
         cross = users.join(
             items
         ).drop('__iter').toPandas().copy()
@@ -533,9 +480,6 @@ def run_recommender_analysis():
         MyRecommender(seed=42, penalty='elasticnet')
     ]
     recommender_names = ["SVM", "Random", "Popularity", "ContentBased", "LR No Penalty","LR L1", "LR L2","LR Elastic Net"]
-
-    # recommenders = [MyRecommender(seed=42, penalty='l1', C=0.1), MyRecommender(seed=42, penalty='elasticnet', C=10)]
-    # recommender_names = ["LR L1 C=0.1", "LR Elastic Net C=10"]
     
     # Initialize recommenders with initial history
     for recommender in recommenders:
